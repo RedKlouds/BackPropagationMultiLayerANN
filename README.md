@@ -13,7 +13,7 @@ we can also derive that, to get a point in which a linear function (f) tells use
 change in the function f^ where tells our network how close we are from the minima, meaning when f^ ==0 we are at a zero slope
 with no changes, instead of estimating the value at x we want to estimate the change in the error function at x, this is because
 we want the network to
-
+ 
 
 gradient decent, is essentially what we are computing when we take the derivative of the transfer function per layer
 
