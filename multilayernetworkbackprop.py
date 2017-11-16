@@ -1,8 +1,34 @@
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#\|
+#=#| Author: Danny Ly MugenKlaus|RedKlouds
+#=#| File:   multilayernetworkbackprop.py
+#=#| Date:   11/16/2017
+#=#|
+#=#| Program Desc: This program is a Multi-Layered Artifical Neural Network, used to recognize
+#=#| specific patterns, through pattern recognition, for this example the mainTest() function
+#=#| uses 3 letters in the form of a row vector, which pertain to the letters '0','1', and '2'
+#=#| in a 6X5 matrix, K, where i is the row, and j is the column, the training vector
+#=#| index i,j is 1 when the current K(i,j) pixel is filled and -1 otherwise.
+#=#| -> At the end of program execution call PlotPerformance to see the performance metrics
+#=#| which summarize the number of epoachs vs learning mean squared error
+#=#| -> Findings:
+#=#|        * with a smaller learning rate, our gradient decent will take smaller steps in
+#=#|        the direction of the gradient, however, smaller steps means it will learn MUCH
+#=#|        slower, with a larger learning rate, learning is faster because the network can
+#=#|        take much larger steps towards the gradient in each layer.
+#=#|
+#=#| Usage: Given a Epoach Traning iterations, and optional learning_rate make the Network
+#=#| Object, then use train(p), a list of dicts which each dict is a training set, ie
+#=#| p = [ {'p':row vector training set 1,'t':target column vector 1},
+#=#|       {'p':row vector training set 2,'t':target column vector 2} ]
+#=#| -> Call Perdict(p) where p, is the same format as above, to return a boolean pertaining
+#=#|    to if the network was able to successfully classify the unseen data set, p.
+#=#|
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#\|
+
 
 import numpy as np
 from neurolab.trans import PureLin, LogSig, HardLim
-import math, queue, time
-
+import random
 from matplotlib import pyplot as plt
 ########
 # Note this program takes input vector in the form of the numpy matrix class
@@ -28,10 +54,14 @@ class BackProp:
 
     def setup2Layer(self,p, t):
         """
-        Set up our pattern recognition weight and bias
-        :return:
+        *Perceptron Multi-Layered Network
+        Set up the Neural Network default parameters, which include Number of Neurons per layer, and number of layer.
+        For now a 2-layer Neural Network is initalized with random weights and biases
+        :param p: Helps us get the number of weights nesscary for the network
+        :param t: Helps us get the number of Neurons nessecary for the output layer
+        :return: None
         """
-
+        #TODO: This function will be made to adjust the number of neurons per layer, and number of layers, as well as the parameters for each layer such as weights and biass
         #work with everyhting as matrix not as arrays
         print("Setting unetwork the paramertsr are")
         p_row, p_col = p.shape
@@ -62,26 +92,30 @@ class BackProp:
 
     def __dxSigMoid(self, a):
         """
-        LogSigmoiund tranferfunctiond derivative.
+        Logsigmoid transfer function derivative.
         :param a:
         :return:
         """
-        return a * (1-a)
+        return a * (1 - a)
     def __dxPureLin(self,a):
         return 1
     def __getDerivative(self, func_type):
+        """
+        return the derivative function
+        :param func_type: a function transfer function, logsig, hardlim, purelin
+        :return: derivative function of parameter func_type
+        """
         lib = {'LOGSIG':self.__dxSigMoid, 'HARDLIM': HardLim(), 'PURELIN': self.__dxPureLin}
         return lib[func_type.upper()]
     def __getTransFunc(self,trans_type):
-        """initalizes and returns a transferfunction object to use
+        """Initalizes and returns a transfer function object to use
         :param trans_type: 'logsig' , 'hardlim','purelim'
         :return: a transfer function object to call
         """
         #could make this its own item in the object self.trans['transType']
         lib = {'LOGSIG':LogSig(), 'HARDLIM': HardLim(), 'PURELIN':PureLin()}
         return lib[trans_type.upper()]
-
-    def run(self, training_set=None):
+    def train(self, training_set=None):
         """
         takes a dict, where key is the input, and value is the target
         Main running function, 'fit' fit the current data model, or find a approximate function that fits this
@@ -170,12 +204,15 @@ class BackProp:
             #print("Final output of this 2-layer network is : %.3f | t is: %.3f\n\t\t**************ERROR is: %s" %(_p, t, self.error))
             print("========================")
 
-    def predict(self, p, t):
+    def predict(self, p, t, ret_actual_a = False):
         """
 
         :param p: is a row vector matrix, of a pattern
         :param t: is a column matrix of the target of the pattern given
-        :return:
+        :param ret_actual_a: if true will return the actual output of a, computed by
+        the final layer.
+        :return: Depending on the flat ret_actual_a, a boolean for if the netowrk correctly classified
+        the sample, or the actual returned value of a
         """
         # solve a for each forward layer and feed it to the next layer
         _p = p['p']
@@ -208,9 +245,9 @@ class BackProp:
         result = hardlim(_p -.5) # returns boolean same or not
 
         print("Result: %s Target %s"%(result,t) )
-
-        return (result == t).all() #boolean true or not
-
+        if not ret_actual_a:
+            return (result == t).all() #boolean true or not
+        return result
     def __getDxMatrix(self,index):
         """
         Returns a matrix corresonpding to the jacobian matrix for derivative matrix
@@ -329,12 +366,6 @@ class BackProp:
         #plt.show()
 
 
-def a(t):
-    l = list()
-    for i in t:
-        l.append({'p':i, 't':(1.0 + (math.sin( (float(math.pi)/4.0) * float(i) )))})
-    return l
-
 def generateNoise(original, pixelToChange):
     copyMax = original['p'].copy()#make a hard copy
     randomNums = np.random.permutation(pixelToChange)
@@ -347,22 +378,16 @@ def generateNoise(original, pixelToChange):
 
 def test():
 
-    #testData = makeTrainingData()
-
-    testD = [1,-2,1.4,1.5,-.5,.2,0,1.5,-1,.23,-1.75,-.23,1.75,1.3,.005,1.2,-1.45,-1.10,-1.66,-1.90,0.645]
-    testData = a(testD)
-    test1 = a([1])
-
 
     zero = {'p':np.matrix([-1,1,1,1,1,-1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,1,-1]),'t': np.matrix([[1],
-                                                                                                                       [0],
-                                                                                                                       [0]])}
+                                                                                                                        [0],
+                                                                                                                        [0]])}
     one = {'p': np.matrix([-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]), 't': np.matrix([[0],
                                                                                                                               [1],
                                                                                                                               [0]])}
     two = {'p':np.matrix([1,-1,-1,-1,-1,-1,1,-1,-1,1,1,1,1,-1,-1,1,-1,1,-1,1,1,-1,-1,1,-1,-1,-1,-1,-1,1]), 't':np.matrix([[0],
-                                                                                                                       [0],
-                                                                                                                       [1]])}
+                                                                                                                        [0],
+                                                                                                                        [1]])}
     FinalTestData = [zero,one,two]
 
 
@@ -370,11 +395,10 @@ def test():
 
     network = BackProp(epoach=700, learning_rate = .1)
 
-    network.run(FinalTestData)
+    network.train(FinalTestData)
 
     print("Predicting...: are they the same ? %s" % network.predict(brokenZero, zero['t']) )
-    import random
-
+    #plot the networks Performance
     network.plotPerformance()
 
 
