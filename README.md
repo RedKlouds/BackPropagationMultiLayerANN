@@ -1,4 +1,4 @@
-# BackPropagationMultiLayerANN
+# Multi-Layer Neural Network with Backpropagation  
 
 This project is a implementation of the multi layer neural network, instead of the Hebbian learning rule implemented
 before this project, was made to solve the same problem , which is pattern recognition. Instead of a single layered
@@ -17,22 +17,20 @@ we want the network to
 
 gradient decent, is essentially what we are computing when we take the derivative of the transfer function per layer
 
-
+*self pre-defined multi-layered neural network to understanding machine learning with ANN better
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
+```
 numpy
 neurolab
 math
 matplotlib
 time
-
-```
-Give examples
-```
+````
 
 ### Installing
 
