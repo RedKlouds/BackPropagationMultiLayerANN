@@ -4,21 +4,6 @@ This project features a 4 output neural network, using 2 layers the first layer 
 ---
 
 
-This project is a implementation of the multi layer neural network, instead of the Hebbian learning rule implemented
-before this project, was made to solve the same problem , which is pattern recognition. Instead of a single layered
-preceptron learning rule where the patterns are memorized in the weights. the mutli-layer network will use <i>Back propogation</i>
-to estimate the function g(x) or 'problem'. In a multi-layer one method used to train the network would be to use a
-Back propogation, in other words once the network has seen the training data, we record the summed mean squared errors(summer)
-and propagate (feed-back) into the network those errors, such that the network will recognize its errors and readjust itself.
-to not get so math-friendly, we know that the transfer/activation function is used to produce the linear relationship, (thus we need
-to keep in mind choosing the hidden layers, must contain linear transfer functions), because the feed-forward layers used a linear
-transfer function to build a relationship between the input vectors points. Because our network realtionship functions are linear
-we can also derive that, to get a point in which a linear function (f) tells use that derivative of f -> f^ of input x will be the instantaneous
-change in the function f^ where tells our network how close we are from the minima, meaning when f^ ==0 we are at a zero slope
-with no changes, instead of estimating the value at x we want to estimate the change in the error function at x, this is because
-we want the network to
-
-
 -> finding as we can see the learning rate of a neural network using backpropogation is much more different than that of a Hebbian learning,
 as a recall Hebbian learning algoirthm saves each pattern within its weights; think memorization. In a multi-layer neural network
 we are training the network by showing it input, looking at the result, then propogating the amount of error back through the network to 
