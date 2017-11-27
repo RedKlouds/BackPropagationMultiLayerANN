@@ -355,7 +355,7 @@ class BackProp:
             #print(self.error_result[i])
 
         plt.plot(self.error_result)
-        plt.title(r"Mean Square Error results, $\alpha  %.4f" % self.learning_rate)# % self.learning_rate)
+        plt.title(r"Mean Square Error results, $\alpha$ %.4f" % self.learning_rate)# % self.learning_rate)
         plt.xlabel("Epochs, iterations")
         plt.ylabel("mean Squared error")
         plt.ylim([0,1])
@@ -383,21 +383,106 @@ def generateNoise(original, pixelToChange):
 def test():
 
 
-    zero = {'p':np.matrix([-1,1,1,1,1,-1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,1,-1]),'t': np.matrix([[1],
-                                                                                                                        [0],
-                                                                                                                        [0]])}
-    one = {'p': np.matrix([-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]), 't': np.matrix([[0],
-                                                                                                                              [1],
-                                                                                                                              [0]])}
-    two = {'p':np.matrix([1,-1,-1,-1,-1,-1,1,-1,-1,1,1,1,1,-1,-1,1,-1,1,-1,1,1,-1,-1,1,-1,-1,-1,-1,-1,1]), 't':np.matrix([[0],
-                                                                                                                        [0],
-                                                                                                                        [1]])}
-    FinalTestData = [zero,one,two]
 
+    zero = {'p':np.matrix([-1,1,1,1,1,-1,
+                           1,-1,-1,-1,-1,1,
+                           1,-1,-1,-1,-1,1,
+                           1,-1,-1,-1,-1,1,
+                           -1,1,1,1,1,-1]),
+            't':np.matrix([[0],
+                            [0],
+                            [0],
+                            [0]])}
+    one = {'p': np.matrix([-1,-1,-1,-1,-1,-1,
+                           1,-1,-1,-1,-1,-1,
+                           1,1,1,1,1,1,
+                           -1,-1,-1,-1,-1,-1,
+                           -1,-1,-1,-1,-1,-1]),
+           't': np.matrix([[0],
+                           [0],
+                           [0],
+                           [1]])}
+
+    two = {'p': np.matrix([1, -1, -1, -1, -1, -1,
+                           1, -1, -1, 1, 1, 1,
+                           1, -1, -1, 1, -1, 1,
+                           -1, 1, 1, -1, -1, 1,
+                           -1, -1, -1, -1, -1, 1]),
+           't': np.matrix([[0],
+                           [0],
+                           [1],
+                           [0]])}
+
+    three = {'p':np.matrix([1,-1,-1,-1,-1,1,
+                            1,-1,1,1,-1,1,
+                            1,-1,1,1,-1,1,
+                            1,1,1,1,1,1,
+                            -1,-1,-1,-1,-1,-1]),
+             't':np.matrix([[0],
+                            [0],
+                            [1],
+                            [1]])}
+    four = {'p':np.matrix([-1,-1,-1,1,-1,-1,
+                           -1,-1,1,1,-1,-1,
+                           -1,1,-1,1,-1,-1,
+                           1,1,1,1,1,1,
+                           -1,-1,-1,1,-1,-1]),
+            't':np.matrix([[0],
+                           [1],
+                           [0],
+                           [0]])}
+    five = {'p':np.matrix([1,1,1,-1,-1,1,
+                           1,-1,1,-1,-1,1,
+                           1,-1,1,-1,-1,1,
+                           1,-1,1,1,1,1,
+                           -1,-1,-1,-1,-1,-1]),
+            't':np.matrix([[0],
+                           [1],
+                           [0],
+                           [1]])}
+    six = {'p':np.matrix([1,1,1,1,1,1,
+                          1,-1,-1,1,-1,1,
+                          1,-1,-1,1,-1,1,
+                          1,-1,-1,1,1,1,
+                          -1,-1,-1,-1,-1,-1]),
+           't':np.matrix([[0],
+                         [1],
+                         [1],
+                         [0]])}
+    seven={'p':np.matrix([1,-1,-1,-1,-1,1,
+                          1,-1,-1,-1,1,-1,
+                          1,-1,-1,1,-1,-1,
+                          1,-1,1,-1,-1,-1,
+                          1,1,-1,-1,-1,-1]),
+           't':np.matrix([[0],
+                          [1],
+                          [1],
+                          [1]])}
+    eight={'p':np.matrix([1, 1, 1, 1, 1, 1,
+                          1, -1, 1, -1, -1, 1,
+                          1, -1, 1, -1, -1, 1,
+                          1, -1, 1, -1, -1, 1,
+                          1, 1, 1, 1, 1, 1]),
+           't':np.matrix([[1],
+                         [0],
+                         [0],
+                         [0]])}
+    nine={'p':np.matrix([1,1,1,-1,-1,-1,
+                         1,-1,1,-1,-1,-1,
+                         1,-1,1,-1,-1,-1,
+                         1, 1, 1, 1, 1 ,1,
+                         -1,-1,-1,-1,-1,-1]),
+          't':np.matrix([[1],
+                         [0],
+                         [0],
+                         [1]])}
+    FinalTestData = [zero,one,two, three, four, five, six, seven, eight, nine]
+
+    #FinalTestData = [zero, one, two]
 
     brokenZero = generateNoise(zero, 8) # returns a dict {'p': np.matrix([])}
 
-    network = BackProp(epoach=400, learning_rate = .1)
+    network = BackProp(epoach=400, learning_rate = 2)
 
     network.train(FinalTestData)
 
@@ -416,7 +501,7 @@ def test():
     bar_x = np.arange(0,len(pixel_remove))
     x_axis_bar = [0, 2, 4, 6, 8]
 
-    numTest = 500
+    numTest = 400
     for iii in range(5): # for each pixel to remove category
         #for each x axis
         for j in range(numTest):#for each test
@@ -424,7 +509,7 @@ def test():
             #grab the random input vector to change
             ranindex = random.randint(0, len(FinalTestData)-1)
             #grab a random input to apply noise to
-            change = generateNoise(FinalTestData[ranindex], 10)#x_axis_bar[iii])  # get random vector and change pix times
+            change = generateNoise(FinalTestData[ranindex],x_axis_bar[iii])  # get random vector and change pix times
             performance = network.predict(change, FinalTestData[ranindex]['t'])
             if performance:
                 y_plot[iii] += 1
@@ -435,10 +520,10 @@ def test():
     figz = plt.figure(2)
     #ax = figz.add_subplot(1,1,1)
     #ax.set_xticks(x_axis)
-    plt.title("Performance with respective Noise")
+    plt.title("Neural Network performance with Noise")
     plt.bar(x_axis_bar,y_plot)
     plt.xlabel("Number of Pixels changed")
-    plt.ylabel("Mean performance, per %s iterations per pixel" % numTest)
+    plt.ylabel("Mean performance per %s iterations per pixel" % numTest)
     plt.grid()
     plt.show()
 

@@ -1,5 +1,9 @@
 # Multi-Layer Neural Network with Backpropagation  
 
+This project features a 4 output neural network, using 2 layers the first layer uses a LogSigmoid activation function, the second layer uses a pure linear activation function.
+---
+
+
 This project is a implementation of the multi layer neural network, instead of the Hebbian learning rule implemented
 before this project, was made to solve the same problem , which is pattern recognition. Instead of a single layered
 preceptron learning rule where the patterns are memorized in the weights. the mutli-layer network will use <i>Back propogation</i>
@@ -15,6 +19,16 @@ with no changes, instead of estimating the value at x we want to estimate the ch
 we want the network to
 
 
+-> finding as we can see the learning rate of a neural network using backpropogation is much more different than that of a Hebbian learning,
+as a recall Hebbian learning algoirthm saves each pattern within its weights; think memorization. In a multi-layer neural network
+we are training the network by showing it input, looking at the result, then propogating the amount of error back through the network to 
+'correct' its behavior, an epoach is a training about through the entire training set going through the network and propogating back.
+
+
+
+below are some resulting benchmarks to understand the networks behavior graphically
+alpha .005 with 3 input patterns, over 400 epoachs
+![.005](https://image.ibb.co/jrYSJR/005_alpha_3_patterns_perf.png)
 gradient decent, is essentially what we are computing when we take the derivative of the transfer function per layer
 
 *self pre-defined multi-layered neural network to understanding machine learning with ANN better
