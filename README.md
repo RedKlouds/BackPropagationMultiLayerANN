@@ -26,8 +26,8 @@ we are training the network by showing it input, looking at the result, then pro
 
 
 
-below are some resulting benchmarks to understand the networks behavior graphically
-alpha .005 with 3 input patterns, over 400 epoachs
+below are some resulting benchmarks to understand the networks behavior graphically\n
+alpha .005 with 3 input patterns, over 400 epoachs\n
 ![.005](https://image.ibb.co/jrYSJR/005_alpha_3_patterns_perf.png)
 gradient decent, is essentially what we are computing when we take the derivative of the transfer function per layer
 
