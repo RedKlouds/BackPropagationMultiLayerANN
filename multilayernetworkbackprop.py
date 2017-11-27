@@ -65,7 +65,7 @@ class BackProp:
         #work with everyhting as matrix not as arrays
         print("Setting unetwork the paramertsr are")
         p_row, p_col = p.shape
-        num_nurons = 4
+        num_nurons = 10
         num_inputs = 30
         print("P COLUM %s" % p_col)
 
@@ -275,7 +275,6 @@ class BackProp:
         return jaccob_matrix
 
     def backProp(self,p):
-        s_final = -2
         #go backwards remember DIS
         #goes from the length which is NOT index based
         #for i in reversed(self.layers):
@@ -293,11 +292,9 @@ class BackProp:
                 _saveSensitivitiy = (-2) * dx_f_matrix * self.error #current error from the current iteration, to backprop
                 #_saveSensitivitiy = _sensitivity
             else:
-
                 _w  = self.layers[i+1]['weight']
                 sens = np.dot(_w.T , _saveSensitivitiy)
                 _saveSensitivitiy = np.dot(dx_f_matrix, sens)
-
                 #update and save the sensitivity for the current layer for updating weights and biases
             self.layers[i]['sensitivity'] = _saveSensitivitiy
             if self.verbose:
@@ -367,6 +364,13 @@ class BackProp:
 
 
 def generateNoise(original, pixelToChange):
+    """
+    Transform the original image vectors with noise, given the number
+    of vectors to change.
+    :param original: Original Vector
+    :param pixelToChange: Number of pixels or indexs to change
+    :return: Changed vector
+    """
     copyMax = original['p'].copy()#make a hard copy
     randomNums = np.random.permutation(pixelToChange)
 
@@ -393,7 +397,7 @@ def test():
 
     brokenZero = generateNoise(zero, 8) # returns a dict {'p': np.matrix([])}
 
-    network = BackProp(epoach=700, learning_rate = .1)
+    network = BackProp(epoach=400, learning_rate = .1)
 
     network.train(FinalTestData)
 
@@ -412,14 +416,15 @@ def test():
     bar_x = np.arange(0,len(pixel_remove))
     x_axis_bar = [0, 2, 4, 6, 8]
 
-    numTest = 50
-    for iii in range(5):
+    numTest = 500
+    for iii in range(5): # for each pixel to remove category
         #for each x axis
-        for j in range(numTest):
+        for j in range(numTest):#for each test
             #run the test 50 times
             #grab the random input vector to change
             ranindex = random.randint(0, len(FinalTestData)-1)
-            change = generateNoise(FinalTestData[ranindex], x_axis_bar[iii])  # get rangom vector and chagne pix times
+            #grab a random input to apply noise to
+            change = generateNoise(FinalTestData[ranindex], 10)#x_axis_bar[iii])  # get random vector and change pix times
             performance = network.predict(change, FinalTestData[ranindex]['t'])
             if performance:
                 y_plot[iii] += 1
