@@ -11,7 +11,7 @@ we are training the network by showing it input, looking at the result, then pro
 
 ---
 Training set for this project.
-[trainingset](https://image.ibb.co/ju1jKb/Sample_IMages.png)
+![trainingset](https://image.ibb.co/ju1jKb/Sample_IMages.png)
 
 
 below are some resulting benchmarks to understand the networks behavior graphically\n
