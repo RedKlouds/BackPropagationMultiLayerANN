@@ -9,6 +9,9 @@ as a recall Hebbian learning algoirthm saves each pattern within its weights; th
 we are training the network by showing it input, looking at the result, then propogating the amount of error back through the network to 
 'correct' its behavior, an epoach is a training about through the entire training set going through the network and propogating back.
 
+---
+Training set for this project.
+[trainingset](https://image.ibb.co/ju1jKb/Sample_IMages.png)
 
 
 below are some resulting benchmarks to understand the networks behavior graphically\n

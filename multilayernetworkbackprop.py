@@ -36,7 +36,7 @@ from matplotlib import pyplot as plt
 #####
 
 
-class BackProp:
+class MultiLayerPerceptron:
     def __init__(self, epoach, verbose=False, learning_rate =.10):
         """
         Lets first hard code a 2layer neural networks
@@ -52,7 +52,7 @@ class BackProp:
         self.verbose = verbose
         self.learning_rate = learning_rate
 
-    def setup2Layer(self,p, t):
+    def __initNetwork(self,p, t):
         """
         *Perceptron Multi-Layered Network
         Set up the Neural Network default parameters, which include Number of Neurons per layer, and number of layer.
@@ -124,12 +124,12 @@ class BackProp:
         """
         #epoach
         #get the first element of the trainig data,so we can set up the network with the dimension sizes
-        self.setup2Layer(training_set[0]['p'], training_set[0]['t'])# get the first input vector to set up the weight and bias
+        self.__initNetwork(training_set[0]['p'], training_set[0]['t'])# get the first input vector to set up the weight and bias
         self.error_result = [0] * self.epoach
 
         for iterCount in range(self.epoach):
             for trainData in range(len(training_set)):
-                self.forwardProp(training_set[trainData]['p'],training_set[trainData]['t'])
+                self.__forwardProp(training_set[trainData]['p'],training_set[trainData]['t'])
                 self.error_result[iterCount] += (np.square(self.cur_error))
             #at the end of the epoach, we run through all patterns, and thbe error has been recorded, summed of sqaured errors in the current epoach index
             #lets make it the mean squared error
@@ -137,7 +137,7 @@ class BackProp:
             if self.verbose:
                 print(self.error_result)
 
-    def forwardProp(self, p,t):
+    def __forwardProp(self, p,t):
         """
         Remember we must run from the front to the back FIRST then go backwards
         this function will also add to the layers dictionary the respective output 'a' for each layer
@@ -197,7 +197,7 @@ class BackProp:
         #self.error_result.append(err)
 
         #step 2
-        self.backProp(p)
+        self.__backProp(p)
 
         if self.verbose:
             print("=======================")
@@ -274,7 +274,7 @@ class BackProp:
             jaccob_matrix[i][i] = dx_func(a_val)#derivative transfer function compute
         return jaccob_matrix
 
-    def backProp(self,p):
+    def __backProp(self,p):
         #go backwards remember DIS
         #goes from the length which is NOT index based
         #for i in reversed(self.layers):
@@ -289,7 +289,7 @@ class BackProp:
 
                 #S^M = -2F*^M(n^M)(t-a) [Error]
 
-                _saveSensitivitiy = (-2) * dx_f_matrix * self.error #current error from the current iteration, to backprop
+                _saveSensitivitiy = (-2) * dx_f_matrix * self.error #current error from the current iteration, to __backProp
                 #_saveSensitivitiy = _sensitivity
             else:
                 _w  = self.layers[i+1]['weight']
@@ -300,10 +300,10 @@ class BackProp:
             if self.verbose:
                 print("THIS IS S" , _saveSensitivitiy)
             #step 3
-        self.trainWeights(p)#retrain the weights and bias
-    def trainWeights(self,p):
+        self.__trainWeights(p)#retrain the weights and bias
+    def __trainWeights(self,p):
         """
-        Retrain the weights CALLED AS STEP 3 AFTER ForwardProp, BackProp
+        Retrain the weights CALLED AS STEP 3 AFTER __forwardProp, __backProp
         :param learning_rate_alpha: This is a floating point number for the leraning rate at which we shoul update
         the weights, we want a small learning rate
         :return:
@@ -482,7 +482,7 @@ def test():
 
     brokenZero = generateNoise(zero, 8) # returns a dict {'p': np.matrix([])}
 
-    network = BackProp(epoach=400, learning_rate = 2)
+    network = MultiLayerPerceptron(epoach=400, learning_rate = 2)
 
     network.train(FinalTestData)
 
