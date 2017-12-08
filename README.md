@@ -19,9 +19,10 @@ Training set for this project.
 ![trainingset](https://image.ibb.co/ju1jKb/Sample_IMages.png)
 
 ---
-\
+
 ### Architecture 
-![Architecture](https://image.ibb.co/nr5HFG/Artchetectre.png)
+![Architecture](https://image.ibb.co/nr5HFG/Artchetectre.png)\
+
 In this implementation I will use a 3-layered perceptron design.
 #### specifications (Hyper Parameters)
 
@@ -44,12 +45,17 @@ bias: random int
 
 
 ---
-\
+
 ### Results
 
+During the discovery of this network's behavior one very important hyper parameter that must be taking into account is the\
+learning rate. As the back-propagation works by taking the derivative of the activation function to find the steepest decent\
+of the loss function (activation function). The final step is to relay that error into the networks weights to readjust the neurons\
+to the correct locations in the input space. This is done through a multiplication of the neurons current location by the error amount\
+multiplied by the learning rate( scalar value ) when the scalar value is large the network will 'step over' the optimized minimum loss function\
+causing worst performance, however if the learning rate is too small, the steps in the steepest gradient will take very long to converge, therefore\
+training will see incomplete since the network was not able to converge to their respective hyperplanes.
 
-
-below are some resulting benchmarks to understand the networks behavior graphically\n
 alpha .005 with 3 input patterns, over 400 epochs
 ![.005](https://image.ibb.co/jrYSJR/005_alpha_3_patterns_perf.png)
 ![.005](https://image.ibb.co/hMHnJR/005_alpha_10_patterns_perf.png)
