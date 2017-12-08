@@ -58,9 +58,10 @@ multiplied by the learning rate( scalar value ) when the scalar value is large t
 causing worst performance, however if the learning rate is too small, the steps in the steepest gradient will take very long to converge, therefore
 training will see incomplete since the network was not able to converge to their respective hyperplanes.
 
-black       |   dfads
-:----------:|:----------------:
-![.005](https://image.ibb.co/jrYSJR/005_alpha_3_patterns_perf.png) |![.005](https://image.ibb.co/hMHnJR/005_alpha_10_patterns_perf.png)
+Low Learning Rate       |   Higher Learning Rate
+:----------------------:|:------------------------:
+![.005](https://image.ibb.co/b57LkG/A_1_N10_E100_Error.png) |![.005](https://image.ibb.co/fERfkG/A_5_N10_E100_Error.png)
+
 The top image shows the mean squared error during training the network to recognize
 TOP: 3 digits
 BOTTOM: 10 digits

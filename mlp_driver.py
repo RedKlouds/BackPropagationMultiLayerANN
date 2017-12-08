@@ -33,8 +33,45 @@ def generateNoise(original, pixelToChange):
 
     return {'p':copyMax}
 
-def test():
 
+def testDataPerformance(network, data, learningRate, numSamples, epochs):
+    """
+    Takes the data parameter and introduces noise, via changes the pixels randomly within the image
+    :param network:
+    :param data:
+    :return:
+    """
+    # create the performance over the interval of 4 test,
+    # x axis will be [0,1,2,3,4]
+    # where 0:0, 1:2, 2:4, 3:6, 4:8 pixels removed
+    # so y_list will be a size of 5 each index has the respective items
+    y_plot = [0] * 5
+    x_axis_bar = [0, 2, 4, 6, 8]
+
+    numTest = 400
+    for iii in range(5):  # for each pixel to remove category
+        # for each x axis
+        for j in range(numTest):  # for each test
+            # run the test 50 times
+            # grab the random input vector to change
+            ranindex = random.randint(0, len(data) - 1)
+            # grab a random input to apply noise to
+            change = generateNoise(data[ranindex], x_axis_bar[iii])  # get random vector and change pix times
+            performance = network.predict(change, data[ranindex]['t'])
+            if performance:
+                y_plot[iii] += 1
+        y_plot[iii] = 1 - (y_plot[iii] / numTest)
+
+    figz = plt.figure(2)
+
+    plt.title(r"Test set Performance $\alpha$=%.3f $\eta$=%s epochs=%s" %(learningRate, numSamples, epochs))
+    plt.bar(x_axis_bar, y_plot)
+    plt.xlabel("Number of Pixels changed")
+    plt.ylabel("Mean performance per %s iterations per pixel" % numTest)
+    plt.grid()
+    plt.show()
+
+def getData():
 
     zero = {'p':np.matrix([-1,1,1,1,1,-1,
                            1,-1,-1,-1,-1,1,
@@ -129,54 +166,21 @@ def test():
                          [0],
                          [1]])}
     FinalTestData = [zero,one,two, three, four, five, six, seven, eight, nine]
+    return FinalTestData
+def test():
+    FinalTestData = getData()
+    test_epoch = 100
+    test_learning_rate = .5
+    test_number_sample =  len(FinalTestData)
 
 
-    brokenZero = generateNoise(zero, 8) # returns a dict {'p': np.matrix([])}
-
-    network = MultiLayerPerceptron(epoch=400, learning_rate = 2)
+    network = MultiLayerPerceptron(epoch=test_epoch, learning_rate =test_learning_rate)
 
     network.train(FinalTestData)
 
-    print("Predicting...: are they the same ? %s" % network.predict(brokenZero, zero['t']) )
-    #plot the networks Performance
     network.plotPerformance()
 
-
-    #create the performance over the interval of 4 test,
-    #x axis will be [0,1,2,3,4]
-    #where 0:0, 1:2, 2:4, 3:6, 4:8 pixels removed
-    #so y_list will be a size of 5 each index has the respective items
-    y_plot = [0] * 5
-    pixel_remove= [0,2,4,6,8]
-    #same size as y_lot and x_axis
-    bar_x = np.arange(0,len(pixel_remove))
-    x_axis_bar = [0, 2, 4, 6, 8]
-
-    numTest = 400
-    for iii in range(5): # for each pixel to remove category
-        #for each x axis
-        for j in range(numTest):#for each test
-            #run the test 50 times
-            #grab the random input vector to change
-            ranindex = random.randint(0, len(FinalTestData)-1)
-            #grab a random input to apply noise to
-            change = generateNoise(FinalTestData[ranindex],x_axis_bar[iii])  # get random vector and change pix times
-            performance = network.predict(change, FinalTestData[ranindex]['t'])
-            if performance:
-                y_plot[iii] += 1
-        y_plot[iii] = 1 - (y_plot[iii] / numTest)
-
-
-
-    figz = plt.figure(2)
-    #ax = figz.add_subplot(1,1,1)
-    #ax.set_xticks(x_axis)
-    plt.title("Neural Network performance with Noise")
-    plt.bar(x_axis_bar,y_plot)
-    plt.xlabel("Number of Pixels changed")
-    plt.ylabel("Mean performance per %s iterations per pixel" % numTest)
-    plt.grid()
-    plt.show()
+    testDataPerformance(network, FinalTestData, test_learning_rate, test_number_sample, test_epoch)
 
     plt.close()
 

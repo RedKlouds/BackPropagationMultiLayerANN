@@ -45,7 +45,9 @@ class MultiLayerPerceptron:
         self.num_epoch = epoch
         self.verbose = verbose
         self.learning_rate = learning_rate
+        self.numSamples = 0
 
+        self.dannyErrors = list()
     def _initNetwork(self, p, t):
         """
         Initialize the Weight and biases of the network, with uniform random values.
@@ -57,7 +59,7 @@ class MultiLayerPerceptron:
         # work with everyhting as matrix not as arrays
         print("Setting unetwork the paramertsr are")
         p_row, p_col = p.shape
-        num_neurons = 10
+        num_neurons = 50
         num_inputs = 30
         print("P COLUM %s" % p_col)
 
@@ -123,14 +125,29 @@ class MultiLayerPerceptron:
         # initalize weights and bias with input vector size, and target size
         self._initNetwork(training_set[0]['p'], training_set[0]['t'])
 
-        for epoch in range(self.num_epoch):
+        self.numSamples = len(training_set)
 
+        for epoch in range(self.num_epoch):
+            self.epochError = list()
             for trainingData in range(len(training_set)):
+
+
                 self._feedForward(training_set[trainingData]['p'], training_set[trainingData]['t'])
-                # record the mean squared error of the current training sample
+
+
+
                 self.error_result[epoch] += (np.square(self.cur_error))
+
             # record the mean squared error of the current epoch
             self.error_result[epoch] = self.error_result[epoch] / len(training_set)
+
+
+            x = self.epochError[0]
+            for i in range(1,len(self.epochError)):
+                x += self.epochError[i]
+            x = x.mean()
+            self.dannyErrors.append( ( (1/len(training_set)) * x))
+            #self.dannyErrors.append( x -.5)
 
     def _feedForward(self, p, t):
         """
@@ -156,13 +173,25 @@ class MultiLayerPerceptron:
             layer['a_output'] = a
             # layer
             _p = a  # input for following layers are the output to the previous layers
+
         self.output_a = _p
+
+
+
+        error = np.square(t - _p)
+        self.epochError.append(error)
+
+
+
+        err = t - p
+        self.error = err
+
 
         err = t - _p
         self.error = err
         self.cur_error = np.dot(err.T, err)
-        print("ERROR %s: " % self.cur_error)
         # step 2
+
         self._backPropagate(p)
 
     def predict(self, p, t, ret_actual_a=False):
@@ -294,18 +323,28 @@ class MultiLayerPerceptron:
         :return: None
         """
 
-        plt.figure(1)
-        for i in range(len(self.error_result)):
-            self.error_result[i] = self.error_result[i][0, 0]
+        #plt.figure(1)
+        # for i in range(len(self.error_result)):
+        #     self.error_result[i] = self.error_result[i][0, 0]
+        #
+        # plt.plot(self.error_result)
+        # plt.title(r"Mean Square Error results, $\alpha$ %.4f" % self.learning_rate)  # % self.learning_rate)
+        # plt.xlabel("Epochs, iterations")
+        # plt.ylabel("mean Squared error")
+        # #plt.ylim([0, 1])
+        # plt.xlim([0, self.num_epoch])
 
-        plt.plot(self.error_result)
-        plt.title(r"Mean Square Error results, $\alpha$ %.4f" % self.learning_rate)  # % self.learning_rate)
-        plt.xlabel("Epochs, iterations")
-        plt.ylabel("mean Squared error")
-        plt.ylim([0, 1])
-        plt.xlim([0, self.num_epoch])
+
+        fig = plt.figure(69)
+        plt.plot(self.dannyErrors, label="MLP mse", c='#EC7063')
+        plt.title(r"Mean Squared Error(mse) $\alpha$%.3f $\eta$=%s" % (self.learning_rate, self.numSamples))
+        plt.xlabel("Epoch iterations")
+        plt.ylabel("Error (percentage %)")
+        plt.legend()
+        plt.xlim( [0, self.num_epoch])
+        plt.ylim([ 0,1])
+
         plt.show()
-
 
 if __name__ == "__main__":
     print("Called main")
