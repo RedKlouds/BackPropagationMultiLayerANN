@@ -61,6 +61,7 @@ training will see incomplete since the network was not able to converge to their
 Low Learning Rate       |   Higher Learning Rate
 :----------------------:|:------------------------:
 ![.005](https://image.ibb.co/b57LkG/A_1_N10_E100_Error.png) |![.005](https://image.ibb.co/fERfkG/A_5_N10_E100_Error.png)
+
 The above figure suggest using a leraning rate that is too low will not allow the network to properly completely learn.
 Looking at the figure we also notice that with a smaller learning rate however its clear the learning steps are much smoother
 i.e. the smoother curve verse the lower mse on the right however the learning curve is much more rigid.
