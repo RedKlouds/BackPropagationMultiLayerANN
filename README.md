@@ -82,6 +82,7 @@ similar function f(x)
 Lower learning rate | Higher learning rate
 :------------------:|:--------------------------:
 [](https://image.ibb.co/dFWPCw/A_1_N10_E100_Test.png)|[](https://image.ibb.co/cQSmQG/A_5_N10_E100_Test.png)
+
 ### Prerequisites
 ```
 numpy
