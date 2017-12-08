@@ -83,6 +83,7 @@ Lower learning rate | Higher learning rate
 :------------------:|:--------------------------:
 ![](https://image.ibb.co/dFWPCw/A_1_N10_E100_Test.png)|![](https://image.ibb.co/cQSmQG/A_5_N10_E100_Test.png)
 
+In the figures above we should the networks ability to recognize digits with number of pixels changed, the lower the bars are the better.
 ### Prerequisites
 ```
 numpy
@@ -121,7 +122,7 @@ plt.show()
 
 ```
 The training set can be any size any pattern, just has to be the same format list of dict,
-where the keys' are 'p' and 't', respectivly
+where the keys' are 'p' and 't', respectively
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -133,10 +134,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 
 ## Acknowledgments
-* Learning
-* Big Data analysis
-* Mom?
-* Inspiration
-* fun
+* Hagan, Martin T., et al. Neural Network Design. s. n., 2016.
+
 
 
