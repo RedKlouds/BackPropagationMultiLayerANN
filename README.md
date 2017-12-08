@@ -1,27 +1,62 @@
 # Multi-Layer Perceptron  
 
-This project features a 4 output neural network, using 2 layers the first layer uses a LogSigmoid activation function, the second layer uses a pure linear activation function.
+### Abstract
+
+This project is made to help gain deeper understanding of how Artificial Neural Networks work. In this project we 
+examine the performance differences between using a multi layered neural network, a Hebbiean learning network, and a single 
+layered perceptron network. During this project I learned that with a mutlilayered perceptron, the input space is in deed split 
+into multiple regions which allow this network to perform good classification of input data. The techniques namely Back-propagation
+for minimizing the loss function of the approximator helps to steer our network towards the minimum of the error. As explored using 
+back-propagation is a very efficent way to teach the network correct inputs.
+ 
 ---
+### Introduction
+In this project we use the following images which consist of 5X6 pixels of the digits 0 - 9. The task of this project is to implement 
+a multi layer neural network from scratch. This network will allow deeper insight on the inner mathematical workings of the network, 
+which will help us compare the performance measures of how well back-prorogation works.
 
-
--> finding as we can see the learning rate of a neural network using backpropogation is much more different than that of a Hebbian learning,
-as a recall Hebbian learning algoirthm saves each pattern within its weights; think memorization. In a multi-layer neural network
-we are training the network by showing it input, looking at the result, then propogating the amount of error back through the network to 
-'correct' its behavior, an epoach is a training about through the entire training set going through the network and propogating back.
-
----
 Training set for this project.
 ![trainingset](https://image.ibb.co/ju1jKb/Sample_IMages.png)
 
+---
+\
+### Architecture 
+![Architecture](https://image.ibb.co/nr5HFG/Artchetectre.png)
+In this implementation I will use a 3-layered perceptron design.
+#### specifications (Hyper Parameters)
+
+**Network Parameters**\
+Learning Rate: Static, .10\
+Neuron Count: 40\
+Connections: 300
+
+**First layer:**\
+Activation Function: Log Sigmoid\
+Neuron Count: 30\
+Weights: random uniform\
+bias: random uniform
+
+**Second layer**\
+Activation Function: Pure Linear\
+Neuron Count: 10\
+Weights: random int\
+bias: random int
+
+
+---
+\
+### Results
+
+
 
 below are some resulting benchmarks to understand the networks behavior graphically\n
-alpha .005 with 3 input patterns, over 400 epoachs
+alpha .005 with 3 input patterns, over 400 epochs
 ![.005](https://image.ibb.co/jrYSJR/005_alpha_3_patterns_perf.png)
 ![.005](https://image.ibb.co/hMHnJR/005_alpha_10_patterns_perf.png)
 The top image shows the mean squared error during training the network to recognize
 TOP: 3 digits
 BOTTOM: 10 digits
-we can see that the mean squared error during training even with 400 epoachs are nowhere near 50%
+we can see that the mean squared error during training even with 400 epochs are nowhere near 50%
 Below we now evaluate the performance of the network with some noise.
 Noise was produced by making a premutated random index of pixels to change in each image, then running those
 through the network and checking if they were correctly recognized.
@@ -33,17 +68,17 @@ As we can see it is expected that becasue the network was unable to properly tra
 to recognizing these input patterns the error of recognizing noisey/disfigured figures were poorly recognized.
 
 ---
-Below we have images the learning rate moved up to .1, over 400 epoachs with the same training samples as above
+Below we have images the learning rate moved up to .1, over 400 epochs with the same training samples as above
 ![.1](https://image.ibb.co/caWQ56/1_alpha_3_patterns_perf.png)
 ![.1](https://image.ibb.co/e4SbCm/1_alpha_10_patterns_perf.png)
 TOP: training performance on .1 learning rate 3 Patterns
 BOTTOM training performance on .1 learning rate 10 Patterns
 
 As we can see and expect a much smoother curve of the mean squared error
-coming down, to explain that the learning rate passed 20% error over the training set took about 100 epoachs only
+coming down, to explain that the learning rate passed 20% error over the training set took about 100 epochs only
 which tells us we have convergence of error
-->Results are expected since the learning rate in a backpropogated alogrithm tells the network how large of a step to take in the 
-gradient decent inorder to minimize this error/loss function, the larger the step in this case of the data sample the quicker can achive a minimized
+->Results are expected since the learning rate in a back-propagated algorithm tells the network how large of a step to take in the 
+gradient decent in order to minimize this error/loss function, the larger the step in this case of the data sample the quicker can achieve a minimized
 loss function for the network
 
 ![perfor](https://image.ibb.co/jxtuyR/1_alpha_10_patterns_noise.png)

@@ -57,21 +57,21 @@ class MultiLayerPerceptron:
         # work with everyhting as matrix not as arrays
         print("Setting unetwork the paramertsr are")
         p_row, p_col = p.shape
-        num_nurons = 10
+        num_neurons = 10
         num_inputs = 30
         print("P COLUM %s" % p_col)
 
         # layer_1_weights
         row, col = t.shape  # given a matrix
-        layer_1_weights = np.random.rand(num_nurons, num_inputs)
-        layer_1_bias = np.random.rand(num_nurons, 1)
+        layer_1_weights = np.random.rand(num_neurons, num_inputs)
+        layer_1_bias = np.random.rand(num_neurons, 1)
         print("number of row for t%s" % row)
 
         # second layer is tricky the input(R) SXR , where R is the number of inputs from the first layer whcih is to asy
         # the same as the number of nurons each neuron gives an inpt
         # so the final layter the output we expect is a 3 nuron thingy [][][], where T is the target vector a column vector
 
-        layer_2_weights = np.random.rand(row, num_nurons)
+        layer_2_weights = np.random.rand(row, num_neurons)
         layer_2_bias = np.random.rand(row, 1)
         # to define the number of nerons S we will make a weight matrix that consist of SXR , where S is the number of neuron
         # and R is the number of inputs #30x1
