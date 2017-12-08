@@ -61,50 +61,26 @@ training will see incomplete since the network was not able to converge to their
 Low Learning Rate       |   Higher Learning Rate
 :----------------------:|:------------------------:
 ![.005](https://image.ibb.co/b57LkG/A_1_N10_E100_Error.png) |![.005](https://image.ibb.co/fERfkG/A_5_N10_E100_Error.png)
+The above figure suggest using a leraning rate that is too low will not allow the network to properly completely learn.
+Looking at the figure we also notice that with a smaller learning rate however its clear the learning steps are much smoother
+i.e. the smoother curve verse the lower mse on the right however the learning curve is much more rigid.
 
-The top image shows the mean squared error during training the network to recognize
-TOP: 3 digits
-BOTTOM: 10 digits
-we can see that the mean squared error during training even with 400 epochs are nowhere near 50%
-Below we now evaluate the performance of the network with some noise.
-Noise was produced by making a premutated random index of pixels to change in each image, then running those
-through the network and checking if they were correctly recognized.
-![.005](https://image.ibb.co/eMiSJR/005_alpha_3_patterns_noise.png)
-![.005](https://image.ibb.co/ibwQ56/005_alpha_10_patterns_noise.png)
-TOP: is performance with 3 input samples trained
-BOTTOM: performance with 10 input samples trained
-As we can see it is expected that becasue the network was unable to properly train itself
-to recognizing these input patterns the error of recognizing noisey/disfigured figures were poorly recognized.
+This problem introduces more methods when it comes to neural networks. Generalization, generalizations are methods employed to 
+neural networks to help find the optimum learning rate. It is necessary since a small learning rate will allow us to converge the problem
+with convergence is, if we converge to the training set, our network will be over-fitted to our training data.
 
----
-Below we have images the learning rate moved up to .1, over 400 epochs with the same training samples as above
-![.1](https://image.ibb.co/caWQ56/1_alpha_3_patterns_perf.png)
-![.1](https://image.ibb.co/e4SbCm/1_alpha_10_patterns_perf.png)
-TOP: training performance on .1 learning rate 3 Patterns
-BOTTOM training performance on .1 learning rate 10 Patterns
+In the project I was able to implement one method of the generalization techniques called 'early stopping', here we have our data set
+split into 3 sets, a test set, validation set, and training set. we train the network and watch as the networks mse on the training set converge
+as normal, however as we are testing the mse we also run our validation data set on the network, as the network converges there lies a point at which
+the network performance on the validation set will start to 're bound' which will signify the point the network does not recognize the data in the validation set
+this is where we 'early stop' our training. Doing so will allow our network to be more general to the points around it, making it approximate a much 
+similar function f(x)
 
-As we can see and expect a much smoother curve of the mean squared error
-coming down, to explain that the learning rate passed 20% error over the training set took about 100 epochs only
-which tells us we have convergence of error
-->Results are expected since the learning rate in a back-propagated algorithm tells the network how large of a step to take in the 
-gradient decent in order to minimize this error/loss function, the larger the step in this case of the data sample the quicker can achieve a minimized
-loss function for the network
+- unfortunately i do not supply any plots for the early stopping, and will continue to work to provides them  as my research progresses
 
-![perfor](https://image.ibb.co/jxtuyR/1_alpha_10_patterns_noise.png)
-now the interesting thing about this network is when we test the performance with degraded patterns, our error goes up starting at 4 changed pixels from the original
--> the complications could be due to a very large learning rate our algoirthm has learned or overfitted the training sample and can hardly
-recognize noisey data, we can overcome this by applying generlization methods such as early stopping by creating a seperate validation dataset
-we can compare when the validationset start to show activity to stop training the network.
-
-
-gradient decent, is essentially what we are computing when we take the derivative of the transfer function per layer
-
-*self pre-defined multi-layered neural network to understanding machine learning with ANN better
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
+Lower learning rate | Higher learning rate
+:------------------:|:--------------------------:
+[](https://image.ibb.co/dFWPCw/A_1_N10_E100_Test.png)|[](https://image.ibb.co/cQSmQG/A_5_N10_E100_Test.png)
 ### Prerequisites
 ```
 numpy
