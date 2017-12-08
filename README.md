@@ -1,4 +1,4 @@
-# Multi-Layer Neural Network with Backpropagation  
+# Multi-Layer Perceptron  
 
 This project features a 4 output neural network, using 2 layers the first layer uses a LogSigmoid activation function, the second layer uses a pure linear activation function.
 ---
