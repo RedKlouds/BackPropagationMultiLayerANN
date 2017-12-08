@@ -100,9 +100,9 @@ A step by step series of examples that tell you have to get a development env ru
 Say what the step will be
 
 ```
-import multilayernetworkbackprop
+from multilayerperceptron import MultiLayerPerceptron
 
-#define your training patterns here
+#define your training patterns here 5X6
 zero = {'p':np.matrix([-1,1,1,1,1,-1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,1,-1]),'t': np.matrix([[1],
                                                                                                                         [0],
                                                                                                                         [0]])}
