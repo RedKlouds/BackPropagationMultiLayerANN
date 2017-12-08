@@ -30,6 +30,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from neurolab.trans import PureLin, LogSig, HardLim
 
+
 class MultiLayerPerceptron:
     def __init__(self, epoch, verbose=False, learning_rate=.10):
         """
@@ -48,6 +49,7 @@ class MultiLayerPerceptron:
         self.numSamples = 0
 
         self.dannyErrors = list()
+
     def _initNetwork(self, p, t):
         """
         Initialize the Weight and biases of the network, with uniform random values.
@@ -130,24 +132,19 @@ class MultiLayerPerceptron:
         for epoch in range(self.num_epoch):
             self.epochError = list()
             for trainingData in range(len(training_set)):
-
-
                 self._feedForward(training_set[trainingData]['p'], training_set[trainingData]['t'])
-
-
 
                 self.error_result[epoch] += (np.square(self.cur_error))
 
             # record the mean squared error of the current epoch
             self.error_result[epoch] = self.error_result[epoch] / len(training_set)
 
-
             x = self.epochError[0]
-            for i in range(1,len(self.epochError)):
+            for i in range(1, len(self.epochError)):
                 x += self.epochError[i]
             x = x.mean()
-            self.dannyErrors.append( ( (1/len(training_set)) * x))
-            #self.dannyErrors.append( x -.5)
+            self.dannyErrors.append(((1 / len(training_set)) * x))
+            # self.dannyErrors.append( x -.5)
 
     def _feedForward(self, p, t):
         """
@@ -176,16 +173,11 @@ class MultiLayerPerceptron:
 
         self.output_a = _p
 
-
-
         error = np.square(t - _p)
         self.epochError.append(error)
 
-
-
         err = t - p
         self.error = err
-
 
         err = t - _p
         self.error = err
@@ -323,28 +315,17 @@ class MultiLayerPerceptron:
         :return: None
         """
 
-        #plt.figure(1)
-        # for i in range(len(self.error_result)):
-        #     self.error_result[i] = self.error_result[i][0, 0]
-        #
-        # plt.plot(self.error_result)
-        # plt.title(r"Mean Square Error results, $\alpha$ %.4f" % self.learning_rate)  # % self.learning_rate)
-        # plt.xlabel("Epochs, iterations")
-        # plt.ylabel("mean Squared error")
-        # #plt.ylim([0, 1])
-        # plt.xlim([0, self.num_epoch])
-
-
         fig = plt.figure(69)
         plt.plot(self.dannyErrors, label="MLP mse", c='#EC7063')
         plt.title(r"Mean Squared Error(mse) $\alpha$%.3f $\eta$=%s" % (self.learning_rate, self.numSamples))
         plt.xlabel("Epoch iterations")
         plt.ylabel("Error (percentage %)")
         plt.legend()
-        plt.xlim( [0, self.num_epoch])
-        plt.ylim([ 0,1])
+        plt.xlim([0, self.num_epoch])
+        plt.ylim([0, 1])
 
         plt.show()
+
 
 if __name__ == "__main__":
     print("Called main")
