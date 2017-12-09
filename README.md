@@ -87,10 +87,9 @@ In the figures above we should the networks ability to recognize digits with num
 ### Prerequisites
 ```
 numpy
-neurolab
-math
+neurotrans
 matplotlib
-time
+
 ````
 
 ### Installing
