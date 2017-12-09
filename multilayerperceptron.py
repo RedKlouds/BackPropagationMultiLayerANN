@@ -28,8 +28,8 @@
 
 import numpy as np
 from matplotlib import pyplot as plt
-from neurolab.trans import PureLin, LogSig, HardLim
 
+from neurotrans import LogSig, HardLim, PureLin
 
 class MultiLayerPerceptron:
     def __init__(self, epoch, verbose=False, learning_rate=.10):
@@ -106,7 +106,8 @@ class MultiLayerPerceptron:
         :param func_type: a function transfer function, logsig, hardlim, purelin
         :return: derivative function of parameter func_type
         """
-        lib = {'LOGSIG': self.__dxSigMoid, 'HARDLIM': HardLim(), 'PURELIN': self.__dxPureLin}
+        #lib = {'LOGSIG': self.__dxSigMoid, 'HARDLIM': HardLim(), 'PURELIN': self.__dxPureLin}
+        lib = {'LOGSIG': LogSig(), 'HARDLIM': HardLim(), 'PURELIN': PureLin().derivative}
         return lib[func_type.upper()]
 
     def __getTransFunc(self, trans_type):
