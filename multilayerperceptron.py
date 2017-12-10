@@ -59,58 +59,29 @@ class MultiLayerPerceptron:
         """
         # TODO: This function will be made to adjust the number of neurons per layer, and number of layers, as well as the parameters for each layer such as weights and biass
         # work with everyhting as matrix not as arrays
-        print("Setting unetwork the paramertsr are")
         p_row, p_col = p.shape
         num_neurons = 50
         num_inputs = 30
-        print("P COLUM %s" % p_col)
 
         # layer_1_weights
         row, col = t.shape  # given a matrix
         layer_1_weights = np.random.rand(num_neurons, num_inputs)
         layer_1_bias = np.random.rand(num_neurons, 1)
-        print("number of row for t%s" % row)
 
-        # second layer is tricky the input(R) SXR , where R is the number of inputs from the first layer whcih is to asy
-        # the same as the number of nurons each neuron gives an inpt
+        # second layer is tricky the input(R) SXR , where R is the number of inputs from the first layer which is to asy
+        # the same as the number of neurons each neuron gives an inpt
         # so the final layter the output we expect is a 3 nuron thingy [][][], where T is the target vector a column vector
 
         layer_2_weights = np.random.rand(row, num_neurons)
         layer_2_bias = np.random.rand(row, 1)
-        # to define the number of nerons S we will make a weight matrix that consist of SXR , where S is the number of neuron
-        # and R is the number of inputs #30x1
-        # define layer1. 4X30
 
         # change parameters of the transfer functiopn here
         self.layers.append({'weight': layer_1_weights, 'bias': layer_1_bias, 'trans_func': 'logsig'})  # for layer 1
         self.layers.append({'weight': layer_2_weights, 'bias': layer_2_bias, 'trans_func': 'logsig'})  # for layer 2
 
-    def __dxSigMoid(self, a):
-        """
-        Logsigmoid transfer function derivative.
-        :param a: output a
-        :return: returns derivative of log Sigmoid
-        """
-        return a * (1 - a)
 
-    def __dxPureLin(self, a):
-        """
-        :param a: output a 
-        :return: returns derivative of linear function
-        """
-        return 1
 
-    def __getDerivative(self, func_type):
-        """
-        return the derivative function
-        :param func_type: a function transfer function, logsig, hardlim, purelin
-        :return: derivative function of parameter func_type
-        """
-        #lib = {'LOGSIG': self.__dxSigMoid, 'HARDLIM': HardLim(), 'PURELIN': self.__dxPureLin}
-        lib = {'LOGSIG': LogSig(), 'HARDLIM': HardLim(), 'PURELIN': PureLin().derivative}
-        return lib[func_type.upper()]
-
-    def __getTransFunc(self, trans_type):
+    def _getTransFunc(self, trans_type):
         """
         Initializes and returns a transfer function object to use
         :param trans_type: 'logsig' , 'hardlim','purelim'
@@ -157,7 +128,7 @@ class MultiLayerPerceptron:
         layerNum = 0
         for layer in self.layers:
             # current layers data
-            tran_func = self.__getTransFunc(layer['trans_func'])
+            tran_func = self._getTransFunc(layer['trans_func'])
             _weight = layer['weight']
             _bias = layer['bias']
             if layerNum == 0:
@@ -201,7 +172,7 @@ class MultiLayerPerceptron:
 
         layerNum = 0
         for layer in self.layers:
-            tran_func = self.__getTransFunc(layer['trans_func'])
+            tran_func = self._getTransFunc(layer['trans_func'])
             _weight = layer['weight']
             _bias = layer['bias']
             if layerNum == 0:
@@ -223,12 +194,12 @@ class MultiLayerPerceptron:
 
         result = hardlim(_p - .5)  # returns boolean same or not
 
-        print("Result: %s Target %s" % (result, t))
+
         if not ret_actual_a:
             return (result == t).all()  # boolean true or not
         return result
 
-    def __getDxMatrix(self, index):
+    def _makeDerivativeMatrix(self, index):
         """
         Computes the corresponding jaccbian matrix for the derivative matrix
         F^1(n-1)
@@ -239,7 +210,8 @@ class MultiLayerPerceptron:
         """
         num_neurons = len(self.layers[index]['a_output'])
         jaccob_matrix = np.zeros(shape=(num_neurons, num_neurons))  # ie S=3, shape 3X3
-        dx_func = self.__getDerivative(self.layers[index]['trans_func'])
+        #dx_func = self.__getDerivative(self.layers[index]['trans_func'])
+        dx_func = self._getTransFunc(self.layers[index]['trans_func']).derivative
         for i in range(num_neurons):
             # diagonal matrix
             a_val = self.layers[index]['a_output'][i]
@@ -257,7 +229,7 @@ class MultiLayerPerceptron:
         _saveSensitivitiy = 0
         for i in range(len(self.layers) - 1, -1, -1):
             # Jacobian Matrix, here
-            dx_f_matrix = self.__getDxMatrix(index=i)
+            dx_f_matrix = self._makeDerivativeMatrix(index=i)
             if i == (len(self.layers) - 1):  # Check if last layer
                 # initial sensitivity
                 # S^M = -2F*^M(n^M)(t-a) [Error]
